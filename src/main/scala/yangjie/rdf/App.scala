@@ -5,5 +5,5 @@ package yangjie.rdf
  *
  */
 object App extends Application {
-  println( "Hello World!" )
+  println( "Hello World!      " )
 }
