@@ -9,4 +9,4 @@ spark-submit -v \
     --queue strategy \
     --conf "spark.dynamicAllocation.minExecutors=10" \
     --conf "spark.dynamicAllocation.maxExecutors=40" \
-    SparkRdf-1.0-SNAPSHOT.jar
+    ../target/SparkRdf-1.0-SNAPSHOT.jar
