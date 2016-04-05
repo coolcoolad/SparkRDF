@@ -1,4 +1,4 @@
-package yangjie.rdf
+package yangjie.rdf.main
 
 /**
   * Created by yangjiecloud on 2016/4/5.
