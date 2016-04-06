@@ -14,27 +14,27 @@ object OwlToTriple {
     val sc = new SparkContext(conf)
 
     val fPath = "/user/yangjiecloud/SparkRdf/owl"
+    println(fPath)
     val rdfPrefix = "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-    val testPrefix = "debug:"
     def textFunc(chd:Node) = chd.label
     def resourceFunc(chd:Node) = {
       val attr = chd.attribute(rdfPrefix, "resource")
       attr match {
-      case None => testPrefix+chd.text
+      case None => "resourceDebug:"+chd.text
       case _ => attr.get.mkString
       }
     }
     def childFunc(chd:Node) = {
       val attr = chd.child.head.attribute(rdfPrefix, "about")
       attr match {
-        case None => testPrefix+chd.text
+        case None => "childDebug:"+chd.text
         case _ => attr.get.mkString
       }
     }
     def aboutFunc(node:Node) = {
       val attr = node.attribute(rdfPrefix,"about")
       attr match {
-        case None => testPrefix+node.text
+        case None => "aboutDebug:"+node.text
         case _ => attr.get.mkString
       }
     }
@@ -42,14 +42,14 @@ object OwlToTriple {
     var rdd = sc.wholeTextFiles(fPath)
     rdd = rdd.flatMap{case (key,doc) => {
       val xml = XML.loadString(doc)
-      val entityNode = (xml \ "_").filter(x => x.prefix == "ub" && x.attribute(rdfPrefix, "about") != None)
+      val entityNode = (xml \ "_").filter(x => x.prefix == "ub" && (x \ s"@{${rdfPrefix}}about").length == 1)
       entityNode.flatMap(node => {
-        node.child.map(chd => {
-          val uri = chd.child.isEmpty match {
+        (node \ "_").map(chd => {
+          val uri = (chd \ "_").isEmpty match {
             case false => childFunc(chd)
             case _ => {
-              chd.attribute(rdfPrefix, "resource") match {
-                case None => textFunc(chd)
+              (chd \ s"@{${rdfPrefix}}resource").length match {
+                case 0 => textFunc(chd)
                 case _ => resourceFunc(chd)
               }
             }
@@ -59,6 +59,7 @@ object OwlToTriple {
       })
     }}
     val outPath = "/user/yangjiecloud/SparkRdf/triple"
+    println(outPath)
     println(IoHelper.deleteFileInHDFS(outPath))
     rdd.saveAsTextFile(outPath)
     sc.stop()
