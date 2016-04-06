@@ -15,10 +15,29 @@ object OwlToTriple {
 
     val fPath = "/user/yangjiecloud/SparkRdf/owl"
     val rdfPrefix = "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    val testPrefix = "debug:"
     def textFunc(chd:Node) = chd.label
-    def resourceFunc(chd:Node) = chd.attribute(rdfPrefix, "resource").get.mkString
-    def childFunc(chd:Node) = chd.child.head.attribute(rdfPrefix, "about").get.mkString
-    def aboutFunc(node:Node) = node.attribute(rdfPrefix,"about").get.mkString
+    def resourceFunc(chd:Node) = {
+      val attr = chd.attribute(rdfPrefix, "resource")
+      attr match {
+      case None => testPrefix+chd.text
+      case _ => attr.get.mkString
+      }
+    }
+    def childFunc(chd:Node) = {
+      val attr = chd.child.head.attribute(rdfPrefix, "about")
+      attr match {
+        case None => testPrefix+chd.text
+        case _ => attr.get.mkString
+      }
+    }
+    def aboutFunc(node:Node) = {
+      val attr = node.attribute(rdfPrefix,"about")
+      attr match {
+        case None => testPrefix+node.text
+        case _ => attr.get.mkString
+      }
+    }
 
     var rdd = sc.wholeTextFiles(fPath)
     rdd = rdd.flatMap{case (key,doc) => {
