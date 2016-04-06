@@ -16,26 +16,27 @@ object OwlToTriple {
     val fPath = "/user/yangjiecloud/SparkRdf/owl"
     println(fPath)
     val rdfPrefix = "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-    def textFunc(chd:Node) = chd.label
+
+    def textFunc(chd:Node) = chd.text
     def resourceFunc(chd:Node) = {
-      val attr = chd.attribute(rdfPrefix, "resource")
-      attr match {
-      case None => "resourceDebug:"+chd.text
-      case _ => attr.get.mkString
+      val attr = chd \ s"@{${rdfPrefix}}resource"
+      attr.length match {
+      case 0 => "resourceDebug:"+chd.text
+      case _ => attr.head.mkString
       }
     }
     def childFunc(chd:Node) = {
-      val attr = chd.child.head.attribute(rdfPrefix, "about")
-      attr match {
-        case None => "childDebug:"+chd.text
-        case _ => attr.get.mkString
+      val attr = chd \ s"@{${rdfPrefix}}about"
+      attr.length match {
+        case 0 => "childDebug:"+chd.text
+        case _ => attr.head.mkString
       }
     }
     def aboutFunc(node:Node) = {
-      val attr = node.attribute(rdfPrefix,"about")
-      attr match {
-        case None => "aboutDebug:"+node.text
-        case _ => attr.get.mkString
+      val attr = node \ s"@{${rdfPrefix}}about"
+      attr.length match {
+        case 0 => "aboutDebug:"+node.text
+        case _ => attr.head.mkString
       }
     }
 
