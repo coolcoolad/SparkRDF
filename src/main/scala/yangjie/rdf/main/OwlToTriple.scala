@@ -26,7 +26,7 @@ object OwlToTriple {
       }
     }
     def childFunc(chd:Node) = {
-      val attr = chd \ s"@{${rdfPrefix}}about"
+      val attr = (chd \ "_").head \ s"@{${rdfPrefix}}about"
       attr.length match {
         case 0 => "childDebug:"+chd.text
         case _ => attr.head.mkString
