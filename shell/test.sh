@@ -10,6 +10,7 @@ spark-submit -v \
     --class yangjie.rdf.main.OwlToTriple \
     --driver-memory 4g \
     --queue strategy \
-    --conf "spark.dynamicAllocation.minExecutors=10" \
-    --conf "spark.dynamicAllocation.maxExecutors=40" \
+    --num-executors 8 \
+    --conf "spark.dynamicAllocation.enable=false" \
+    --conf "spark.shuffle.service.enabled=false"  \
     target/SparkRdf-1.0-SNAPSHOT.jar

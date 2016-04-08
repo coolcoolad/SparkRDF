@@ -1,5 +1,7 @@
 package yangjie.rdf.main
 
+import org.apache.jena
+
 /**
   * Created by yangjiecloud on 2016/4/5.
   */
