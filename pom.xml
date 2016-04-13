@@ -46,7 +46,8 @@
   <dependencies>
     <dependency>
       <groupId>org.apache.jena</groupId>
-      <artifactId>jena</artifactId>
+      <artifactId>apache-jena-libs</artifactId>
+      <type>pom</type>
       <version>3.0.0</version>
     </dependency>
     <dependency>

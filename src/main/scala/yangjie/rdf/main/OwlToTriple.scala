@@ -40,8 +40,7 @@ object OwlToTriple {
       }
     }
 
-    var rdd = sc.wholeTextFiles(fPath)
-    rdd = rdd.flatMap{case (key,doc) => {
+    val rdd = sc.wholeTextFiles(fPath).flatMap{case (key,doc) => {
       val xml = XML.loadString(doc)
       val entityNode = (xml \ "_").filter(x => x.prefix == "ub" && (x \ s"@{${rdfPrefix}}about").length == 1)
       entityNode.flatMap(node => {
@@ -55,7 +54,7 @@ object OwlToTriple {
               }
             }
           }
-          (aboutFunc(node),s"${chd.label},${uri}")
+          s"${aboutFunc(node)}\t${chd.label}\t${uri}"
         })
       })
     }}
