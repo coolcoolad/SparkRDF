@@ -44,16 +44,21 @@ object TriplePatternMatch {
     // 检查并生成 pattern type
     val patternType = getPatternType(spo)
     println(patternType)
+    val patternS = spo.getSubject.getURI
+    val patternO = spo.getObject.getURI
     // 检索spark
+//    var rdd = sc.textFile("/user/yangjiecloud/SparkRdf/triple").filter{line => {
+//      val spoArr = line.split('\t')
+//      patternType match {
+//        case "100" => spo.getSubject.getURI == spoArr(0)
+//        case "010" => spo.getPredicate.getURI == spoArr(1)
+//        case "001" => spo.getObject.getURI == spoArr(2)
+//        case _ => false
+//      }
+//    }}
     var rdd = sc.textFile("/user/yangjiecloud/SparkRdf/triple").filter{line => {
       val spoArr = line.split('\t')
-      val patternType = ""
-      patternType match {
-        case "100" => spo.getSubject.getURI == spoArr(0)
-        case "010" => spo.getPredicate.getURI == spoArr(1)
-        case "001" => spo.getObject.getURI == spoArr(2)
-        case _ => false
-      }
+      patternS == spoArr(0) && patternO == spoArr(2)
     }}
 
     val outPath = "/user/yangjiecloud/SparkRdf/tripleMatchResult"
