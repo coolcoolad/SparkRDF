@@ -11,7 +11,8 @@ import org.apache.jena.sparql.syntax.{ElementPathBlock, ElementVisitorBase, Elem
   */
 object TestApp {
   def main(args: Array[String]): Unit = {
-    val query = QueryFactory.create("select ?X ?Y ?Z {?X <http://www.w3.org/2001/vcard-rdf/3.0#FN> ?Z . ?Z <http://www.w3.org/2001/vcard-rdf/3.0#FN> ?Y . ?X <http://www.w3.org/2001/vcard-rdf/3.0#FN> ?Y . ?X <http://www.w3.org/2001/vcard-rdf/3.0#FN> 'Grad' . ?Y <http://www.w3.org/2001/vcard-rdf/3.0#dd> 'Univ' . ?Z<http://www.w3.org/2001/vcard-rdf/3.0#xx> 'Depart'}") ;
+    var query = QueryFactory.create("select ?X ?Y ?Z {?X <http://www.w3.org/2001/vcard-rdf/3.0#FN> ?Z . ?Z <http://www.w3.org/2001/vcard-rdf/3.0#FN> ?Y . ?X <http://www.w3.org/2001/vcard-rdf/3.0#FN> ?Y . ?X <http://www.w3.org/2001/vcard-rdf/3.0#FN> 'Grad' . ?Y <http://www.w3.org/2001/vcard-rdf/3.0#dd> 'Univ' . ?Z<http://www.w3.org/2001/vcard-rdf/3.0#xx> 'Depart'}") ;
+    query = QueryFactory.create("prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> prefix ub: <http://www.lehigh.edu/~zhp2/2004/0401/univ-bench.owl#> select ?X {?X rdf:type ub:GraduateStudent}")
     val pattern = query.getQueryPattern()
     ElementWalker.walk(pattern,new ElementVisitorBase() {
       override def visit(el:ElementPathBlock): Unit = {

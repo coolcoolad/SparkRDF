@@ -4,7 +4,7 @@ cd ../
 mvn clean package
 
 spark-submit -v \
-    --class yangjie.rdf.main.TriplePatternMatch \
+    --class yangjie.rdf.main.TriplePatternMatchTest \
     --driver-memory 4g \
     --queue strategy \
     --num-executors 8 \

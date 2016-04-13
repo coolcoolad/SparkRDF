@@ -56,7 +56,8 @@ object TriplePatternMatch {
 //        case _ => false
 //      }
 //    }}
-    var rdd = sc.textFile("/user/yangjiecloud/SparkRdf/triple").filter{line => {
+    val rdd = sc.textFile("/user/yangjiecloud/SparkRdf/triple").cache()
+    val rdd1 = rdd.filter{line => {
       val spoArr = line.split('\t')
       patternS == spoArr(0) && patternO == spoArr(2)
     }}
@@ -88,13 +89,13 @@ object TriplePatternMatch {
 
   def main(args:Array[String]): Unit = {
     // 创建query
-    val query = QueryFactory.create("select ?Z {<http://www.Department0.University0.edu> ?Z <http://www.University0.edu>}")
+    var query = QueryFactory.create("select ?Z {<http://www.Department0.University0.edu> ?Z <http://www.University0.edu>}")
     // 获取pattern
     val pattern = query.getQueryPattern()
     // 获取spo
     val spo = getSpoFromPattern(pattern)
     // spark查spo
-    matchBySpark(spo)
+    //matchBySpark(spo)
     println("ok")
   }
 }
